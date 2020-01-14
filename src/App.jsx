@@ -23,17 +23,19 @@ add["CHAI"] = "0x06AF07097C9Eeb7fD685c692751D5C66dB49c215"
 
 let web3;
 let provider;
+let chainId;
 if (typeof window.ethereum !== 'undefined') {
   window.ethereum.autoRefreshOnNetworkChange = false;
   web3 = new Web3(window.ethereum);
   provider = new ethers.providers.Web3Provider(web3.currentProvider);
+  chainId = parseInt(window.ethereum.chainId)
 }
 
 const build = (address, name) => {
   return new ethers.Contract(
     address,
     require(`./abi/${name}.json`),
-    provider ? provider : eth
+    chainId === 1 ? provider : eth
   );
 }
 
@@ -166,6 +168,7 @@ class App extends Component {
     this.setState(state => {
       return {
         blockNumber,
+        chainId: chainId,
         Line: utils.formatUnits(res[0], 45),
         debt: utils.formatUnits(res[1], 45),
         ilks: [
