@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { Button } from 'react-bootstrap';
 
 export { HealButton as default };
@@ -6,7 +7,7 @@ export { HealButton as default };
 async function healMakerProtocol(debt) {
   try {
     console.log(debt);
-    const provider = window.vow.provider;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     await window.ethereum.enable()
     const signer = provider.getSigner();
     const vowWrite = window.vow.connect(signer);
